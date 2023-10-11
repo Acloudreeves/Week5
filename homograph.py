@@ -8,9 +8,16 @@ def canon(filepath1, filepath2):
 
 
 # Function to determine if filepath1 and filepath2 are the same
+# I think it might be easiest to have the canon function return a tuple
 def homograph(filepath1, filepath2):
     # code here
-    canon(filepath1, filepath2)
+    two_cannons = canon(filepath1, filepath2)
+    (first_canon, second_canon) = two_cannons
+
+    if first_canon == second_canon:
+        return True
+    else:
+        return False
 
 
 def main():
