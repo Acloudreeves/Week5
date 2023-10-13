@@ -1,46 +1,3 @@
-# This program takes an input of two file paths and compares them to verify if they are homographs or non-homographs.
-
-import os
-import platform
-
-# This converts an encoding (the input path) into some canon.
-def canon(filepath: str) -> str:
-    parent_directory_token = '..'
-    current_directory_token = '.'
-
-    os_dir_separator = '\\' if platform.system() == 'Windows' else '/'
-
-    list_directories = filepath.split(os_dir_separator)
-
-    temp_token = ''
-    abs_path = []
-    for token in list_directories:
-        if token == parent_directory_token and token != temp_token:
-            temp_token = abs_path.pop()
-        if token == parent_directory_token or token == current_directory_token:
-            continue
-        abs_path.append(token)
-    return os_dir_separator.join(abs_path)
-    
-# Function to determine if filepath1 and filepath2 are the same.
-def homograph(filepath1: str, filepath2: str) -> bool:
-    return canon(filepath1.lower()) == canon(filepath2.lower())
-
-def main(filepath1, filepath2):
-#     first_path: str = input("Specify the first file name")
-#     second_path: str = input("Specify the second file name\n")
-
-    print(filepath1)
-    print(filepath2)
-
-    if homograph(filepath1, filepath2):
-        print("The paths are homographs")
-    else:
-        print("The paths are non-homographs")
-
-# if __name__ == "__main__":
-#     main()
-
 
 """
 Test Case Set 1: Non-homographs
@@ -50,6 +7,9 @@ Requirements:
     3. Create enough tests to capture all aspects of the path symbols for my system.
     """
 print("Test Case Set 1: Non-homographs")
+
+def main(filepath1, filepath2):
+    return
 
 # Test 1
 # Scenario: On a Windows system, filepath1 is on the C: drive, while filepath2 specifies a different drive.
@@ -83,7 +43,7 @@ print("===================")
 # Expected result: Non-homograph
 print("Test 4")
 filepath1 = "/users/cse453/secret/password.txt"
-filepath2 = "/users/cse453/secret/./password.txt"
+filepath2 = "./cse453/secret/password.txt"
 main(filepath1, filepath2)
 print("===================")
 
@@ -119,9 +79,10 @@ print("===================")
 # Expected result: Non-homograph
 print("Test 8")    
 filepath1 = "C:\\USERS\\CSE453\\SECRET\\PASSWORD.TXT"
-filepath2 = "C:\\USERS\\CSE453\\SECRET\\PАSSWORD.TXT"
+filepath2 = "C:/USERS/CSE453/SECRET/PАSSWORD.TXT"
 main(filepath1, filepath2)
 print("===================")
+
 
 """
 Test Case Set 2: Homographs
@@ -143,7 +104,7 @@ print("===================")
 
 # Test 2
 # Scenario: On a Windows, Macintosh, or Linux system, Filepath1 and filepath2 are exactly the same, using forward slashes.
-# Expected result: Homograph
+# Expected result: Non-homograph
 print("Test 2")    
 filepath1 = "C:/users/cse453/secret/password.txt"
 filepath2 = "C:/users/cse453/secret/password.txt"
@@ -160,7 +121,7 @@ main(filepath1, filepath2)
 print("===================")
 
 # Test 3
-# Scenario: On a Windows system, filepath1 is on the C: drive, while filepath2 specifies an administrative path (\\localhost\C$) (This is a UNC path that points to the same location as filepath1, but requires administrative privileges.)
+# Scenario: On a Windows system, filepath1 is on the C: drive, while filepath2 specifies an administrative path (\\localhost\C$) (This is a UNC path that points to the same location, but requires administrative privileges.)
 # Expected result: Homograph
 print("Test 3")    
 filepath1 = "C:\\users\\cse453\\secret\\password.txt"
@@ -212,6 +173,3 @@ filepath1 = "C:/users/cse453/secret/password.txt"
 filepath2 = "C:/USERS/CSE453/SECRET/PASSWORD.TXT" 
 main(filepath1, filepath2)
 print("===================")
-
-
-
