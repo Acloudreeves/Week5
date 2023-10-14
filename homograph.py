@@ -167,7 +167,7 @@ def menu():
     choice = input("Enter your choice: ")
     return choice
 
-
+# This converts an encoding (the input path) into some canon.
 def canon(filepath: str) -> str:
     parent_directory_token = ".."
     current_directory_token = "."
@@ -191,7 +191,7 @@ def canon(filepath: str) -> str:
 def homograph(filepath1: str, filepath2: str) -> bool:
     return canon(filepath1.lower()) == canon(filepath2.lower())
 
-
+# This Function implements the menu, runs the test cases or manual inputs, prints test results, and calls other functions to execute.
 def main():
     while True:
         choice = menu()
