@@ -4,7 +4,7 @@ import os
 import platform
 
 # This dictionary contains the test cases for homographs and non-homographs. True = Homograph, False = Non-Homograph
-test_cases1 = [
+nix_cases = [
     # Non-Homograph
     # Test 1
     # Scenario: Filepath2 uses ./ to specify a current directory. On a Windows system, only .\ is valid.
@@ -75,78 +75,78 @@ test_cases1 = [
         "expected": "Homograph",
     }
 ]
-test_cases2 = [
-    # Test 9
+win_cases = [
+    # Test 1
     # Scenario: On a Windows system, filepath1 is on the C: drive, while filepath2 specifies a different drive.
     {
         "name": "Test 1",
         "filepath1": "C:\\users\\cse453\\secret\\password.txt",
         "filepath2": "D:\\users\\cse453\\secret\\password.txt",
-        "expected": False,
+        "expected": "Homograph",
     },
-    # Test 10
-    # Scenario: On a Windows system, filepath1 uses "\" while filepath2 uses "/". Windows will accept either one, but does not treat them as equivalent.
+    # Test 2 Scenario: On a Windows system, filepath1 uses "\" while filepath2 uses "/". Windows will accept either
+    # one, but does not treat them as equivalent.
     {
         "name": "Test 2",
         "filepath1": "C:\\users\\cse453\\secret\\password.txt",
         "filepath2": "C:/users/cse453/secret/password.txt",
-        "expected": False,
+        "expected": "Non-Homograph",
     },
-    # Test 11
-    # Scenario: On a Windows system, filepath2 contains the cyrillic capital letter "A". Windows paths are case-insensitive.
+    # Test 3 Scenario: On a Windows system, filepath2 contains the cyrillic capital letter "A". Windows paths are
+    # case-insensitive.
     {
-        "name": "Test 11",
+        "name": "Test 3",
         "filepath1": "C:\\USERS\\CSE453\\SECRET\\PASSWORD.TXT",
         "filepath2": "C:\\USERS\\CSE453\\SECRET\\PАSSWORD.TXT",
-        "expected": False,
+        "expected": "Homograph",
     },
-    # Test 12
+    # Test 4
     # Scenario: On a Windows system, filepath1 and filepath2 are exactly the same using back slashes.   
     {
-        "name": "Test 12",
+        "name": "Test 4",
         "filepath1": "C:\\users\\cse453\\secret\\password.txt",
         "filepath2": "C:\\users\\cse453\\secret\\password.txt",
-        "expected": True,
+        "expected": "Non-Homograph",
     },
-    # Test 13
-    # Scenario: On a Windows, Macintosh, or Linux system, Filepath1 and filepath2 are exactly the same, using forward slashes.
+    # Test 5 Scenario: On a Windows, Macintosh, or Linux system, Filepath1 and filepath2 are exactly the same,
+    # using forward slashes.
     {
-        "name": "Test 13",
+        "name": "Test 5",
         "filepath1": "C:/users/cse453/secret/password.txt",
         "filepath2": "C:/users/cse453/secret/password.txt",
-        "expected": True,
+        "expected": "Non-Homograph",
     },
-    # Test 14
-    # Scenario: On a Windows system, both filepaths contain the same capital letters. Windows paths are case-insensitive.
+    # Test 6 Scenario: On a Windows system, both filepaths contain the same capital letters. Windows paths are
+    # case-insensitive.
     {
-        "name": "Test 14",
+        "name": "Test 6",
         "filepath1": "C:\\USERS\\CSE453\\SECRET\\PASSWORD.TXT",
         "filepath2": "C:\\USERS\\CSE453\\SECRET\\PASSWORD.TXT",
-        "expected": True,
+        "expected": "Non-Homograph",
     },
-    # Test 15
+    # Test 7
     # Scenario: On a Windows system, filepath2 contains capital letters. Windows paths are case-insensitive.
     {
-        "name": "Test 15",
+        "name": "Test 7",
         "filepath1": "C:\\users\\cse453\\secret\\password.txt",
         "filepath2": "C:\\USERS\\CSE453\\SECRET\\PASSWORD.TXT",
-        "expected": True,
+        "expected": "Non-Homograph",
     },
-    # Test 16
+    # Test 8
     # Scenario: In filepath2 the .\ symbol represents the current directory.
     {
-        "name": "Test 16",
+        "name": "Test 8",
         "filepath1": "C:\\users\\cse453\\secret\\password.txt",
         "filepath2": "C:\\users\\cse453\\.\\secret\\password.txt",
-        "expected": True,
+        "expected": "Non-Homograph",
     },
-    # Test 17
+    # Test 9
     # Scenario: In filepath2 the ..\ symbol represents the parent directory on a Windows system.
     {
-        "name": "Test 17",
+        "name": "Test 9",
         "filepath1": "C:\\users\\cse453\\secret\\password.txt",
         "filepath2": "C:\\users\\cse453\\secret\\..\\secret\\password.txt",
-        "expected": True,
+        "expected": "Non-Homograph",
     },
 ]
 
@@ -199,10 +199,10 @@ def main():
         choice = menu()
         if choice == "1":
             print("\nTest Case Set 1: *nix base test cases")
-            run_tests(test_cases1)
+            run_tests(nix_cases)
         if choice == "2":
             print("\nTest Case Set 2: Windows test cases")
-            run_tests(test_cases2)
+            run_tests(win_cases)
         elif choice == "3":
             filepath1 = input("Enter the first file path: ")
             filepath2 = input("Enter the second file path: ")
