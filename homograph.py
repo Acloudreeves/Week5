@@ -213,7 +213,7 @@ def main():
         elif choice == "4":
             break
         else:
-            print("Invalid choice. Please enter 1, 2, or 3.")
+            print("Invalid choice. Please chose out of available.")
 
 
 def run_tests(cases):
