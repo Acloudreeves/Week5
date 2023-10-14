@@ -55,3 +55,17 @@ def generate_non_homographs(forbidden_path):
 forbidden_path = '/home/user/secret/password.txt'
 non_homographs = generate_non_homographs(forbidden_path)
 print(non_homographs)
+
+
+"""
+Report Ideas
+Terms:
+e: The encoding in this scenario is the file path, which is a string that represents the location of a file on the file system. For example, “C:\users\cse453\secret\password.txt” is an encoding.
+r: There is no requirement to have a rendition (r) in the code.
+R(): There is no requirement to write a separate rendering function for this assignment.
+c: The canon is a canonical representation of a file path, which is a unique and simplified way of writing a file path. For example, “/users/cse453/secret/password.txt” is a canon for the file path “/users/cse453/./secret/password.txt”.
+C(): The canonicalization function is a function that takes an encoding (a file path) and returns a canon (a canonical representation of the file path). In the code, this is the "canon()" function.
+H(): The homograph function is a function that takes two encodings (two file paths) and returns True if they are homographs (they refer to the same file) or False otherwise. This function uses the canonicalization function to compare the two encodings. In the code, this is the "homograph()" function. 
+
+
+"""

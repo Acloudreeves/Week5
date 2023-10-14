@@ -3,16 +3,179 @@
 import os
 import platform
 
-# This converts an encoding (the input path) into some canon.
-def canon(filepath: str) -> str:
-    parent_directory_token = '..'
-    current_directory_token = '.'
+# This dictionary contains the test cases for homographs and non-homographs. True = Homograph, False = Non-Homograph
+test_cases = [
+    # Test Case Set 1: Non-homographs
+    # Requirements:
+    # 1. Non-homographs represent file paths that are similar to, but different than, the forbidden file.
+    # 2. Test the various symbols provided by my system (Windows, Macintosh or Linux) that are used to specify a path. (/, ./, ../, \, C:, D:, etc.)
+    # 3. Create enough tests to capture all aspects of the path symbols for my system.
+    # 4. Expected result is False. The two paths are non-homographs.
+    # print("Test Case Set 1: Non-homographs")
+    # Test 1
+    # Scenario: On a Windows system, filepath1 is on the C: drive, while filepath2 specifies a different drive.
+    {
+        "name": "Test 1",
+        "filepath1": "C:\\users\\cse453\\secret\\password.txt",
+        "filepath2": "D:\\users\\cse453\\secret\\password.txt",
+        "expected": False,
+    },
+    # Test 2
+    # Scenario: Filepath2 has a different /cse453/ directory name in the path (Capital "S" instead of "5").
+    {
+        "name": "Test 2",
+        "filepath1": "/users/cse453/secret/password.txt",
+        "filepath2": "/users/cse4S3/secret/password.txt",
+        "expected": False,
+    },
+    # Test 3
+    # Scenario: Filepath2 uses /../ to specify a parent directory incorrectly.
+    {
+        "name": "Test 3",
+        "filepath1": "/users/cse453/secret/password.txt",
+        "filepath2": "/users/cse453/../password.txt",
+        "expected": False,
+    },
+    # Test 4
+    # Scenario: Filepath2 uses .\ to specify the current directory incorrectly.
+    {
+        "name": "Test 4",
+        "filepath1": "\\users\\cse453\\secret\\password.txt",
+        "filepath2": "\\users\\cse453\\.\\password.txt",
+        "expected": False,
+    },
+    # Test 5
+    # Scenario: Filepath2 uses a cyrillic character for letter "a" in the filename.
+    {
+        "name": "Test 5",
+        "filepath1": "/users/cse453/secret/password.txt",
+        "filepath2": "/users/cse453/secret/pаssword.txt",
+        "expected": False,
+    },
+    # Test 6
+    # Scenario: Filepath2 includes a special character, #.
+    {
+        "name": "Test 6",
+        "filepath1": "/users/cse453/secret/password.txt",
+        "filepath2": "/users/cse453/secret/password#.txt",
+        "expected": False,
+    },
+    # Test 7
+    # Scenario: Filepath2 includes a white space.
+    {
+        "name": "Test 7",
+        "filepath1": "/users/cse453/secret/password.txt",
+        "filepath2": "/users/cse453/secret/password.txt ",
+        "expected": False,
+    },
+    # Test 8
+    # Scenario: On a Windows system, filepath2 contains the cyrillic capital letter "A". Windows paths are case-insensitive.
+    {
+        "name": "Test 8",
+        "filepath1": "C:\\USERS\\CSE453\\SECRET\\PASSWORD.TXT",
+        "filepath2": "C:\\USERS\\CSE453\\SECRET\\PАSSWORD.TXT",
+        "expected": False,
+    },
+    # Test 9
+    # Scenario: On a Windows system, filepath1 uses "\" while filepath2 uses "/". Windows will accept either one, but does not treat them as equivalent.
+    {
+        "name": "Test 9",
+        "filepath1": "C:\\users\\cse453\\secret\\password.txt",
+        "filepath2": "C:/users/cse453/secret/password.txt",
+        "expected": False,
+    },
+    # Test 10
+    # Scenario: Filepath2 uses ../ to specify a parent directory. On a Windows system, only ..\ is valid.
+    {
+        "name": "Test 10",
+        "filepath1": "/users/cse453/secret/password.txt",
+        "filepath2": "/users/cse453/secret/../secret/password.txt",
+        "expected": False,
+    },
+    # Test 11
+    # Scenario: Filepath2 uses ./ to specify a current directory. On a Windows system, only .\ is valid.
+    {
+        "name": "Test 11",
+        "filepath1": "/users/cse453/secret/password.txt",
+        "filepath2": "/users/cse453/./secret/password.txt",
+        "expected": False,
+    },
+    # Test Case Set 2: Homographs
+    # Requirements:
+    # 1. Homographs represent file paths that are equivalent to the forbidden file but are different strings.
+    # 2. Test the various symbols provided by my system (Windows, Macintosh or Linux) that are used to specify a path. (/, ./, ../, \, C:, D:, etc.)
+    # 3. Create enough tests to capture all aspects of the path symbols for my system.
+    # 4. Expected result is True. The two paths are homographs.
+    # print("Test Case Set 2: Homographs")
+    # Test 12
+    # Scenario: On a Windows system, filepath1 and filepath2 are exactly the same using back slashes.
+    {
+        "name": "Test 12",
+        "filepath1": "C:\\users\\cse453\\secret\\password.txt",
+        "filepath2": "C:\\users\\cse453\\secret\\password.txt",
+        "expected": True,
+    },
+    # Test 13
+    # Scenario: On a Windows, Macintosh, or Linux system, Filepath1 and filepath2 are exactly the same, using forward slashes.
+    {
+        "name": "Test 13",
+        "filepath1": "C:/users/cse453/secret/password.txt",
+        "filepath2": "C:/users/cse453/secret/password.txt",
+        "expected": True,
+    },
+    # Test 14
+    # Scenario: On a Windows system, both filepaths contain the same capital letters. Windows paths are case-insensitive.
+    {
+        "name": "Test 14",
+        "filepath1": "C:\\USERS\\CSE453\\SECRET\\PASSWORD.TXT",
+        "filepath2": "C:\\USERS\\CSE453\\SECRET\\PASSWORD.TXT",
+        "expected": True,
+    },
+    # Test 15
+    # Scenario: On a Windows system, filepath2 contains capital letters. Windows paths are case-insensitive.
+    {
+        "name": "Test 15",
+        "filepath1": "C:\\users\\cse453\\secret\\password.txt",
+        "filepath2": "C:\\USERS\\CSE453\\SECRET\\PASSWORD.TXT",
+        "expected": True,
+    },
+    # Test 16
+    # Scenario: In filepath2 the .\ symbol represents the current directory.
+    {
+        "name": "Test 16",
+        "filepath1": "C:\\users\\cse453\\secret\\password.txt",
+        "filepath2": "C:\\users\\cse453\\.\\secret\\password.txt",
+        "expected": True,
+    },
+    # Test 17
+    # Scenario: In filepath2 the ..\ symbol represents the parent directory on a Windows system.
+    {
+        "name": "Test 17",
+        "filepath1": "C:\\users\\cse453\\secret\\password.txt",
+        "filepath2": "C:\\users\\cse453\\secret\\..\\secret\\password.txt",
+        "expected": True,
+    },
+]
 
-    os_dir_separator = '\\' if platform.system() == 'Windows' else '/'
+
+# This function allows the user to select options from a menu.
+def menu():
+    print("1. Run test cases")
+    print("2. Enter file paths manually")
+    print("3. Exit")
+    choice = input("Enter your choice: ")
+    return choice
+
+
+def canon(filepath: str) -> str:
+    parent_directory_token = ".."
+    current_directory_token = "."
+
+    os_dir_separator = "\\" if platform.system() == "Windows" else "/"
 
     list_directories = filepath.split(os_dir_separator)
 
-    temp_token = ''
+    temp_token = ""
     abs_path = []
     for token in list_directories:
         if token == parent_directory_token and token != temp_token:
@@ -21,197 +184,37 @@ def canon(filepath: str) -> str:
             continue
         abs_path.append(token)
     return os_dir_separator.join(abs_path)
-    
+
+
 # Function to determine if filepath1 and filepath2 are the same.
 def homograph(filepath1: str, filepath2: str) -> bool:
     return canon(filepath1.lower()) == canon(filepath2.lower())
 
-def main(filepath1, filepath2):
-#     first_path: str = input("Specify the first file name")
-#     second_path: str = input("Specify the second file name\n")
 
-    print(filepath1)
-    print(filepath2)
-
-    if homograph(filepath1, filepath2):
-        print("The paths are homographs")
-    else:
-        print("The paths are non-homographs")
-
-# if __name__ == "__main__":
-#     main()
-
-
-"""
-Test Case Set 1: Non-homographs
-Requirements: 
-    1. Non-homographs represent file paths that are similar to, but different than, the forbidden file.
-    2. Test the various symbols provided by my system (Windows, Macintosh or Linux) that are used to specify a path. (/, ./, ../, \, C:, D:, etc.)
-    3. Create enough tests to capture all aspects of the path symbols for my system.
-    """
-print("Test Case Set 1: Non-homographs")
-
-# Test 1
-# Scenario: On a Windows system, filepath1 is on the C: drive, while filepath2 specifies a different drive.
-# Expected result: Non-homograph
-print("Test 1")
-filepath1 = "C:\\users\\cse453\\secret\\password.txt"
-filepath2 = "D:\\users\\cse453\\secret\\password.txt"
-main(filepath1, filepath2)
-print("===================")
-
-# Test 2
-# Scenario: Filepath2 has a different /cse453/ directory name in the path (Capital "S" instead of "5").
-# Expected result: Non-homograph
-print("Test 2")
-filepath1 = "/users/cse453/secret/password.txt"
-filepath2 = "/users/cse4S3/secret/password.txt"
-main(filepath1, filepath2)
-print("===================")
-
-# Test 3
-# Scenario: Filepath2 uses /../ to specify a parent directory incorrectly.
-# Expected result: Non-homograph
-print("Test 3")
-filepath1 = "/users/cse453/secret/password.txt"
-filepath2 = "/users/cse453/../password.txt"
-main(filepath1, filepath2)
-print("===================")
-
-# Test 4
-# Scenario: Filepath2 uses ./ to specify the current directory, incorrectly.
-# Expected result: Non-homograph
-print("Test 4")
-filepath1 = "/users/cse453/secret/password.txt"
-filepath2 = "/users/cse453/secret/./password.txt"
-main(filepath1, filepath2)
-print("===================")
-
-# Test 5
-# Scenario: Filepath2 uses a cyrillic character for letter "a" in the filename.
-# Expected result: Non-homograph
-print("Test 5")
-filepath1 = "/users/cse453/secret/password.txt"
-filepath2 = "/users/cse453/secret/pаssword.txt"
-main(filepath1, filepath2)
-print("===================")
-
-# Test 6
-# Scenario: Filepath2 includes a special character, #.
-# Expected result: Non-homograph
-print("Test 6")
-filepath1 = "/users/cse453/secret/password.txt"
-filepath2 = "/users/cse453/secret/password#.txt"
-main(filepath1, filepath2)
-print("===================")
-
-# Test 7
-# Scenario: Filepath2 includes a white space.
-# Expected result: Non-homograph
-print("Test 7")
-filepath1 = "/users/cse453/secret/password.txt"
-filepath2 = "/users/cse453/secret/password.txt "
-main(filepath1, filepath2)
-print("===================")
-
-# Test 8
-# Scenario: On a Windows system, filepath1 and filepath2 both contain capital letter, but filepath2 contains capital letters. Windows paths are case-insensitive.
-# Expected result: Non-homograph
-print("Test 8")    
-filepath1 = "C:\\USERS\\CSE453\\SECRET\\PASSWORD.TXT"
-filepath2 = "C:\\USERS\\CSE453\\SECRET\\PАSSWORD.TXT"
-main(filepath1, filepath2)
-print("===================")
-
-"""
-Test Case Set 2: Homographs
-Requirements: 
-    1. Homographs represent file paths that are equivalent to the forbidden file but are different strings.
-    2. Test the various symbols provided by my system (Windows, Macintosh or Linux) that are used to specify a path. (/, ./, ../, \, C:, D:, etc.)
-    3. Create enough tests to capture all aspects of the path symbols for my system.
-    """
-print("Test Case Set 2: Homographs")
-
-# Test 1
-# Scenario: On a Windows system, filepath1 and filepath2 are exactly the same using back slashes.
-# Expected result: Homograph
-print("Test 1")    
-filepath1 = "C:\\users\\cse453\\secret\\password.txt"
-filepath2 = "C:\\users\\cse453\\secret\\password.txt"
-main(filepath1, filepath2)
-print("===================")
-
-# Test 2
-# Scenario: On a Windows, Macintosh, or Linux system, Filepath1 and filepath2 are exactly the same, using forward slashes.
-# Expected result: Homograph
-print("Test 2")    
-filepath1 = "C:/users/cse453/secret/password.txt"
-filepath2 = "C:/users/cse453/secret/password.txt"
-main(filepath1, filepath2)
-print("===================")
-
-# Test 3
-# Scenario: On a Windows system, filepath1 uses "\" while filepath2 uses "/".
-# Expected result: Homograph (both point to the same location)
-print("Test 3")    
-filepath1 = "C:\\users\\cse453\\secret\\password.txt"
-filepath2 = "C:/users/cse453/secret/password.txt"
-main(filepath1, filepath2)
-print("===================")
-
-# Test 3
-# Scenario: On a Windows system, filepath1 is on the C: drive, while filepath2 specifies an administrative path (\\localhost\C$) (This is a UNC path that points to the same location as filepath1, but requires administrative privileges.)
-# Expected result: Homograph
-print("Test 3")    
-filepath1 = "C:\\users\\cse453\\secret\\password.txt"
-filepath2 = "\\\\localhost\\C$\\users\\cse453\\secret\\password.txt"
-main(filepath1, filepath2)
-print("===================")
-
-# Test 4
-# Scenario: In filepath2 the .\ symbol represents the current directory.
-# Expected result: Homograph
-print("Test 4")    
-filepath1 = "C:\\users\\cse453\\secret\\password.txt"
-filepath2 = "C:\\users\\cse453\\.\\secret\\password.txt"
-main(filepath1, filepath2)
-print("===================")
-
-# Test 5
-# Scenario: In filepath2 the ../ symbol represents the parent directory.
-# Expected result: Homograph
-print("Test 5")    
-filepath1 = "/users/cse453/secret/password.txt"
-filepath2 = "/users/cse453/secret/../secret/password.txt"
-main(filepath1, filepath2)
-print("===================")
-
-# Test 6
-# Scenario: In filepath2 the ./ symbol represents the current directory.
-# Expected result: Homograph
-print("Test 6")    
-filepath1 = "/users/cse453/secret/password.txt"
-filepath2 = "/users/cse453/./secret/password.txt"
-main(filepath1, filepath2)
-print("===================")
-
-# Test 7
-# Scenario: On a Windows system, filepath2 contains capital letters. Windows paths are case-insensitive.
-# Expected result: Homograph
-print("Test 7")    
-filepath1 = "C:\\users\\cse453\\secret\\password.txt"
-filepath2 = "C:\\USERS\\CSE453\\SECRET\\PASSWORD.TXT" 
-main(filepath1, filepath2)
-print("===================")
-
-# Test 8
-# Scenario: On a Windows system, filepath2 contains capital letters. Windows paths are case-insensitive.
-# Expected result: Homograph
-print("Test 8")    
-filepath1 = "C:/users/cse453/secret/password.txt"
-filepath2 = "C:/USERS/CSE453/SECRET/PASSWORD.TXT" 
-main(filepath1, filepath2)
-print("===================")
+def main():
+    while True:
+        choice = menu()
+        if choice == "1":
+            for test_case in test_cases:
+                print(test_case["name"])
+                print(test_case["filepath1"])
+                print(test_case["filepath2"])
+                result = homograph(test_case["filepath1"], test_case["filepath2"])
+                print("Expected:", test_case["expected"])
+                print("Actual:", result)
+                print("===================")
+        elif choice == "2":
+            filepath1 = input("Enter the first file path: ")
+            filepath2 = input("Enter the second file path: ")
+            if homograph(filepath1, filepath2):
+                print("The paths are homographs")
+            else:
+                print("The paths are non-homographs")
+        elif choice == "3":
+            break
+        else:
+            print("Invalid choice. Please enter 1, 2, or 3.")
 
 
-
+if __name__ == "__main__":
+    main()
