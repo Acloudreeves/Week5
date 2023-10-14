@@ -200,20 +200,20 @@ def main():
         if choice == "1":
             print("\nTest Case Set 1: *nix base test cases")
             run_tests(nix_cases)
+            continue
         if choice == "2":
             print("\nTest Case Set 2: Windows test cases")
             run_tests(win_cases)
-        elif choice == "3":
+            continue
+        if choice == "3":
             filepath1 = input("Enter the first file path: ")
             filepath2 = input("Enter the second file path: ")
-            if homograph(filepath1, filepath2):
-                print("The paths are homographs")
-            else:
-                print("The paths are non-homographs")
-        elif choice == "4":
+            print("The paths are non-homographs") if homograph(filepath1, filepath2) else print("The paths are "
+                                                                                                "homographs")
+            continue
+        if choice == "4":
             break
-        else:
-            print("Invalid choice. Please chose out of available.")
+        print("Invalid choice. Please chose out of available.")
 
 
 def run_tests(cases):
