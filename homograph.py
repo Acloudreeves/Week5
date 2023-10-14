@@ -7,7 +7,7 @@ import platform
 nix_cases = [
     # Non-Homograph
     # Test 1
-    # Scenario: Filepath2 uses ./ to specify a current directory. On a Windows system, only .\ is valid.
+    # Scenario: Filepath2 uses ./ to specify a current directory. 
     {
         "name": "Test 1",
         "filepath1": "/users/cse453/secret/password.txt",
@@ -15,7 +15,7 @@ nix_cases = [
         "expected": "Non-Homograph",
     },
     # Test 2
-    # Scenario: Filepath2 uses ../ to specify a parent directory. On a Windows system, only ..\ is valid.
+    # Scenario: Filepath2 uses ../ to specify a parent directory. 
     {
         "name": "Test 2",
         "filepath1": "/users/cse453/secret/password.txt",
@@ -34,7 +34,7 @@ nix_cases = [
 
     # Homograph
     # Test 4
-    # Scenario: Filepath2 uses ..\ to specify a parent directory incorrectly on a Windows system.
+    # Scenario: Filepath2 uses ..\ to specify a parent directory incorrectly.
     {
         "name": "Test 4",
         "filepath1": "\\users\\cse453\\secret\\password.txt",
@@ -73,7 +73,15 @@ nix_cases = [
         "filepath1": "/users/cse453/secret/password.txt",
         "filepath2": "/users/cse453/secret/pаssword.txt",
         "expected": "Homograph",
-    }
+    },
+    # Test 9 
+    # Scenario: Filepath1 and filepath2 are exactly the same.
+    {
+        "name": "Test 9",
+        "filepath1": "C:/users/cse453/secret/password.txt",
+        "filepath2": "C:/users/cse453/secret/password.txt",
+        "expected": "Non-Homograph",
+    },
 ]
 win_cases = [
     # Test 1
@@ -84,8 +92,7 @@ win_cases = [
         "filepath2": "D:\\users\\cse453\\secret\\password.txt",
         "expected": "Homograph",
     },
-    # Test 2 Scenario: On a Windows system, filepath1 uses "\" while filepath2 uses "/". Windows will accept either
-    # one, but does not treat them as equivalent.
+    # Test 2 Scenario: On a Windows system, filepath1 uses "\" while filepath2 uses "/". 
     {
         "name": "Test 2",
         "filepath1": "C:\\users\\cse453\\secret\\password.txt",
@@ -108,46 +115,38 @@ win_cases = [
         "filepath2": "C:\\users\\cse453\\secret\\password.txt",
         "expected": "Non-Homograph",
     },
-    # Test 5 Scenario: On a Windows, Macintosh, or Linux system, Filepath1 and filepath2 are exactly the same,
-    # using forward slashes.
+    # Test 5 
+    # Scenario: On a Windows system, both filepaths contain the same capital letters. Windows paths are case-insensitive.
     {
         "name": "Test 5",
-        "filepath1": "C:/users/cse453/secret/password.txt",
-        "filepath2": "C:/users/cse453/secret/password.txt",
-        "expected": "Non-Homograph",
-    },
-    # Test 6 Scenario: On a Windows system, both filepaths contain the same capital letters. Windows paths are
-    # case-insensitive.
-    {
-        "name": "Test 6",
         "filepath1": "C:\\USERS\\CSE453\\SECRET\\PASSWORD.TXT",
         "filepath2": "C:\\USERS\\CSE453\\SECRET\\PASSWORD.TXT",
         "expected": "Non-Homograph",
     },
-    # Test 7
+    # Test 6
     # Scenario: On a Windows system, filepath2 contains capital letters. Windows paths are case-insensitive.
     {
-        "name": "Test 7",
+        "name": "Test 6",
         "filepath1": "C:\\users\\cse453\\secret\\password.txt",
         "filepath2": "C:\\USERS\\CSE453\\SECRET\\PASSWORD.TXT",
         "expected": "Non-Homograph",
     },
-    # Test 8
+    # Test 7
     # Scenario: In filepath2 the .\ symbol represents the current directory.
     {
-        "name": "Test 8",
+        "name": "Test 7",
         "filepath1": "C:\\users\\cse453\\secret\\password.txt",
         "filepath2": "C:\\users\\cse453\\.\\secret\\password.txt",
         "expected": "Non-Homograph",
     },
-    # Test 9
+    # Test 8
     # Scenario: In filepath2 the ..\ symbol represents the parent directory on a Windows system.
     {
-        "name": "Test 9",
+        "name": "Test 8",
         "filepath1": "C:\\users\\cse453\\secret\\password.txt",
         "filepath2": "C:\\users\\cse453\\secret\\..\\secret\\password.txt",
         "expected": "Non-Homograph",
-    },
+    }
 ]
 
 
