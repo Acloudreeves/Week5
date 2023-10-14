@@ -168,10 +168,7 @@ def canon(filepath: str) -> str:
 
     os_dir_separator = "\\" if platform.system() == "Windows" else "/"
 
-    if platform.system() == "Windows":
-        filepath = filepath.replace('/', os_dir_separator)
-    if platform.system() == "Linux" or platform.system() == 'Darwin':
-        filepath = filepath.replace('\\', os_dir_separator)
+    filepath = filepath.replace('/' if platform.system() == "Windows" else '\\', os_dir_separator)
 
     filepath = filepath.strip()
     list_directories = filepath.split(os_dir_separator)
