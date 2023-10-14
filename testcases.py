@@ -1,4 +1,3 @@
-
 """
 Test Case Set 1: Non-homographs
 Requirements: 
@@ -8,8 +7,10 @@ Requirements:
     """
 print("Test Case Set 1: Non-homographs")
 
+
 def main(filepath1, filepath2):
     return
+
 
 # Test 1
 # Scenario: On a Windows system, filepath1 is on the C: drive, while filepath2 specifies a different drive.
@@ -77,12 +78,11 @@ print("===================")
 # Test 8
 # Scenario: On a Windows system, filepath1 and filepath2 both contain capital letter, but filepath2 contains capital letters. Windows paths are case-insensitive.
 # Expected result: Non-homograph
-print("Test 8")    
+print("Test 8")
 filepath1 = "C:\\USERS\\CSE453\\SECRET\\PASSWORD.TXT"
 filepath2 = "C:/USERS/CSE453/SECRET/PАSSWORD.TXT"
 main(filepath1, filepath2)
 print("===================")
-
 
 """
 Test Case Set 2: Homographs
@@ -96,7 +96,7 @@ print("Test Case Set 2: Homographs")
 # Test 1
 # Scenario: On a Windows system, filepath1 and filepath2 are exactly the same using back slashes.
 # Expected result: Homograph
-print("Test 1")    
+print("Test 1")
 filepath1 = "C:\\users\\cse453\\secret\\password.txt"
 filepath2 = "C:\\users\\cse453\\secret\\password.txt"
 main(filepath1, filepath2)
@@ -105,7 +105,7 @@ print("===================")
 # Test 2
 # Scenario: On a Windows, Macintosh, or Linux system, Filepath1 and filepath2 are exactly the same, using forward slashes.
 # Expected result: Non-homograph
-print("Test 2")    
+print("Test 2")
 filepath1 = "C:/users/cse453/secret/password.txt"
 filepath2 = "C:/users/cse453/secret/password.txt"
 main(filepath1, filepath2)
@@ -114,7 +114,7 @@ print("===================")
 # Test 3
 # Scenario: On a Windows system, filepath1 uses "\" while filepath2 uses "/".
 # Expected result: Homograph (both point to the same location)
-print("Test 3")    
+print("Test 3")
 filepath1 = "C:\\users\\cse453\\secret\\password.txt"
 filepath2 = "C:/users/cse453/secret/password.txt"
 main(filepath1, filepath2)
@@ -123,7 +123,7 @@ print("===================")
 # Test 3
 # Scenario: On a Windows system, filepath1 is on the C: drive, while filepath2 specifies an administrative path (\\localhost\C$) (This is a UNC path that points to the same location, but requires administrative privileges.)
 # Expected result: Homograph
-print("Test 3")    
+print("Test 3")
 filepath1 = "C:\\users\\cse453\\secret\\password.txt"
 filepath2 = "\\\\localhost\\C$\\users\\cse453\\secret\\password.txt"
 main(filepath1, filepath2)
@@ -132,7 +132,7 @@ print("===================")
 # Test 4
 # Scenario: In filepath2 the .\ symbol represents the current directory.
 # Expected result: Homograph
-print("Test 4")    
+print("Test 4")
 filepath1 = "C:\\users\\cse453\\secret\\password.txt"
 filepath2 = "C:\\users\\cse453\\.\\secret\\password.txt"
 main(filepath1, filepath2)
@@ -141,7 +141,7 @@ print("===================")
 # Test 5
 # Scenario: In filepath2 the ../ symbol represents the parent directory.
 # Expected result: Homograph
-print("Test 5")    
+print("Test 5")
 filepath1 = "/users/cse453/secret/password.txt"
 filepath2 = "/users/cse453/secret/../secret/password.txt"
 main(filepath1, filepath2)
@@ -150,7 +150,7 @@ print("===================")
 # Test 6
 # Scenario: In filepath2 the ./ symbol represents the current directory.
 # Expected result: Homograph
-print("Test 6")    
+print("Test 6")
 filepath1 = "/users/cse453/secret/password.txt"
 filepath2 = "/users/cse453/./secret/password.txt"
 main(filepath1, filepath2)
@@ -159,17 +159,17 @@ print("===================")
 # Test 7
 # Scenario: On a Windows system, filepath2 contains capital letters. Windows paths are case-insensitive.
 # Expected result: Homograph
-print("Test 7")    
+print("Test 7")
 filepath1 = "C:\\users\\cse453\\secret\\password.txt"
-filepath2 = "C:\\USERS\\CSE453\\SECRET\\PASSWORD.TXT" 
+filepath2 = "C:\\USERS\\CSE453\\SECRET\\PASSWORD.TXT"
 main(filepath1, filepath2)
 print("===================")
 
 # Test 8
 # Scenario: On a Windows system, filepath2 contains capital letters. Windows paths are case-insensitive.
 # Expected result: Homograph
-print("Test 8")    
+print("Test 8")
 filepath1 = "C:/users/cse453/secret/password.txt"
-filepath2 = "C:/USERS/CSE453/SECRET/PASSWORD.TXT" 
+filepath2 = "C:/USERS/CSE453/SECRET/PASSWORD.TXT"
 main(filepath1, filepath2)
 print("===================")
