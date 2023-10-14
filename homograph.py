@@ -4,14 +4,8 @@ import os
 import platform
 
 # This dictionary contains the test cases for homographs and non-homographs. True = Homograph, False = Non-Homograph
-test_cases = [
+test_cases1 = [
     # Test Case Set 1: Non-homographs
-    # Requirements:
-    # 1. Non-homographs represent file paths that are similar to, but different than, the forbidden file.
-    # 2. Test the various symbols provided by my system (Windows, Macintosh or Linux) that are used to specify a path. (/, ./, ../, \, C:, D:, etc.)
-    # 3. Create enough tests to capture all aspects of the path symbols for my system.
-    # 4. Expected result is False. The two paths are non-homographs.
-    # print("Test Case Set 1: Non-homographs")
     # Test 1
     # Scenario: On a Windows system, filepath1 is on the C: drive, while filepath2 specifies a different drive.
     {
@@ -100,16 +94,12 @@ test_cases = [
         "filepath1": "C:\\USERS\\CSE453\\SECRET\\PASSWORD.TXT",
         "filepath2": "C:\\USERS\\CSE453\\SECRET\\PАSSWORD.TXT",
         "expected": False,
-    },
+    }
+]
+test_cases2 = [
     # Test Case Set 2: Homographs
-    # Requirements:
-    # 1. Homographs represent file paths that are equivalent to the forbidden file but are different strings.
-    # 2. Test the various symbols provided by my system (Windows, Macintosh or Linux) that are used to specify a path. (/, ./, ../, \, C:, D:, etc.)
-    # 3. Create enough tests to capture all aspects of the path symbols for my system.
-    # 4. Expected result is True. The two paths are homographs.
-    # print("Test Case Set 2: Homographs")
     # Test 12
-    # Scenario: On a Windows system, filepath1 and filepath2 are exactly the same using back slashes.
+    # Scenario: On a Windows system, filepath1 and filepath2 are exactly the same using back slashes.   
     {
         "name": "Test 12",
         "filepath1": "C:\\users\\cse453\\secret\\password.txt",
@@ -161,7 +151,7 @@ test_cases = [
 
 # This function allows the user to select options from a menu.
 def menu():
-    print("1. Run test cases")
+    print("\n1. Run test cases")
     print("2. Enter file paths manually")
     print("3. Exit")
     choice = input("Enter your choice: ")
@@ -196,7 +186,17 @@ def main():
     while True:
         choice = menu()
         if choice == "1":
-            for test_case in test_cases:
+            print("\nTest Case Set 1: Non-homographs")
+            for test_case in test_cases1:
+                print(test_case["name"])
+                print(test_case["filepath1"])
+                print(test_case["filepath2"])
+                result = homograph(test_case["filepath1"], test_case["filepath2"])
+                print("Expected:", test_case["expected"])
+                print("Actual:", result)
+                print("===================")
+            print("\nTest Case Set 2: Homographs")
+            for test_case in test_cases2:
                 print(test_case["name"])
                 print(test_case["filepath1"])
                 print(test_case["filepath2"])
