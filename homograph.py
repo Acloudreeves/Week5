@@ -1,6 +1,5 @@
 # This program takes an input of two file paths and compares them to verify if they are homographs or non-homographs.
 
-import os
 import platform
 
 # This dictionary contains the test cases for homographs and non-homographs. True = Homograph, False = Non-Homograph
