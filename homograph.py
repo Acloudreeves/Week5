@@ -21,83 +21,84 @@ test_cases = [
         "expected": False,
     },
     # Test 2
-    # Scenario: Filepath2 has a different /cse453/ directory name in the path (Capital "S" instead of "5").
-    {
-        "name": "Test 2",
-        "filepath1": "/users/cse453/secret/password.txt",
-        "filepath2": "/users/cse4S3/secret/password.txt",
-        "expected": False,
-    },
-    # Test 3
-    # Scenario: Filepath2 uses /../ to specify a parent directory incorrectly.
-    {
-        "name": "Test 3",
-        "filepath1": "/users/cse453/secret/password.txt",
-        "filepath2": "/users/cse453/../password.txt",
-        "expected": False,
-    },
-    # Test 4
-    # Scenario: Filepath2 uses .\ to specify the current directory incorrectly.
-    {
-        "name": "Test 4",
-        "filepath1": "\\users\\cse453\\secret\\password.txt",
-        "filepath2": "\\users\\cse453\\.\\password.txt",
-        "expected": False,
-    },
-    # Test 5
-    # Scenario: Filepath2 uses a cyrillic character for letter "a" in the filename.
-    {
-        "name": "Test 5",
-        "filepath1": "/users/cse453/secret/password.txt",
-        "filepath2": "/users/cse453/secret/pаssword.txt",
-        "expected": False,
-    },
-    # Test 6
-    # Scenario: Filepath2 includes a special character, #.
-    {
-        "name": "Test 6",
-        "filepath1": "/users/cse453/secret/password.txt",
-        "filepath2": "/users/cse453/secret/password#.txt",
-        "expected": False,
-    },
-    # Test 7
-    # Scenario: Filepath2 includes a white space.
-    {
-        "name": "Test 7",
-        "filepath1": "/users/cse453/secret/password.txt",
-        "filepath2": "/users/cse453/secret/password.txt ",
-        "expected": False,
-    },
-    # Test 8
-    # Scenario: On a Windows system, filepath2 contains the cyrillic capital letter "A". Windows paths are case-insensitive.
-    {
-        "name": "Test 8",
-        "filepath1": "C:\\USERS\\CSE453\\SECRET\\PASSWORD.TXT",
-        "filepath2": "C:\\USERS\\CSE453\\SECRET\\PАSSWORD.TXT",
-        "expected": False,
-    },
-    # Test 9
     # Scenario: On a Windows system, filepath1 uses "\" while filepath2 uses "/". Windows will accept either one, but does not treat them as equivalent.
     {
-        "name": "Test 9",
+        "name": "Test 2",
         "filepath1": "C:\\users\\cse453\\secret\\password.txt",
         "filepath2": "C:/users/cse453/secret/password.txt",
         "expected": False,
     },
-    # Test 10
+    # Test 3
+    # Scenario: Filepath2 uses ./ to specify a current directory. On a Windows system, only .\ is valid.
+    {
+        "name": "Test 3",
+        "filepath1": "/users/cse453/secret/password.txt",
+        "filepath2": "/users/cse453/./secret/password.txt",
+        "expected": False,
+    },
+    # Test 4
     # Scenario: Filepath2 uses ../ to specify a parent directory. On a Windows system, only ..\ is valid.
     {
-        "name": "Test 10",
+        "name": "Test 4",
         "filepath1": "/users/cse453/secret/password.txt",
         "filepath2": "/users/cse453/secret/../secret/password.txt",
         "expected": False,
     },
+    # Test 5
+    # Scenario: Filepath2 uses ..\ to specify a parent directory incorrectly on a Windows system.
+    {
+        "name": "Test 5",
+        "filepath1": "\\users\\cse453\\secret\\password.txt",
+        "filepath2": "\\users\\cse453\\..\\password.txt",
+        "expected": False,
+    },
+    # Test 6
+    # Scenario: Filepath2 uses .\ to specify the current directory incorrectly on a Windows system.
+    {
+        "name": "Test 6",
+        "filepath1": "\\users\\cse453\\secret\\password.txt",
+        "filepath2": "\\users\\cse453\\.\\password.txt",
+        "expected": False,
+    },
+    # Test 7
+    # Scenario: Filepath2 has a different /cse453/ directory name in the path (Capital "S" instead of "5").
+    {
+        "name": "Test 7",
+        "filepath1": "/users/cse453/secret/password.txt",
+        "filepath2": "/users/cse4S3/secret/password.txt",
+        "expected": False,
+    },
+
+    # Test 8
+    # Scenario: Filepath2 includes a special character, #.
+    {
+        "name": "Test 8",
+        "filepath1": "/users/cse453/secret/password.txt",
+        "filepath2": "/users/cse453/secret/password#.txt",
+        "expected": False,
+    },
+    # Test 9
+    # Scenario: Filepath2 includes a white space.
+    {
+        "name": "Test 9",
+        "filepath1": "/users/cse453/secret/password.txt",
+        "filepath2": "/users/cse453/secret/password.txt ",
+        "expected": False,
+    },
+    # Test 10
+    # Scenario: Filepath2 uses a cyrillic character for letter "a" in the filename.
+    {
+        "name": "Test 10",
+        "filepath1": "/users/cse453/secret/password.txt",
+        "filepath2": "/users/cse453/secret/pаssword.txt",
+        "expected": False,
+    },
     # Test 11
-    # Scenario: Filepath2 uses ./ to specify a current directory. On a Windows system, only .\ is valid.
+    # Scenario: On a Windows system, filepath2 contains the cyrillic capital letter "A". Windows paths are case-insensitive.
     {
         "name": "Test 11",
-        "filepath1": "/users/cse453/secret/password.txt",
-        "filepath2": "/users/cse453/./secret/password.txt",
+        "filepath1": "C:\\USERS\\CSE453\\SECRET\\PASSWORD.TXT",
+        "filepath2": "C:\\USERS\\CSE453\\SECRET\\PАSSWORD.TXT",
         "expected": False,
     },
     # Test Case Set 2: Homographs
