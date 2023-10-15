@@ -2,9 +2,8 @@
 
 import platform
 
-# This dictionary contains the test cases for homographs and non-homographs. True = Homograph, False = Non-Homograph
+# This dictionary contains the test cases for both homographs and non-homographs on a Linux or Macintosh *nix based system.
 nix_cases = [
-    # Non-Homograph
     # Test 1
     # Scenario: Filepath2 uses ./ to specify a current directory. 
     {
@@ -161,34 +160,50 @@ def menu():
 
 # This converts an encoding (the input path) into some canon.
 def canon(filepath: str) -> str:
+
+    # Define the tokens for the parent directory and the current directory, respectively. 
     parent_directory_token = ".."
     current_directory_token = "."
 
+    # Set the directory separator based on the operating system.
     os_dir_separator = "\\" if platform.system() == "Windows" else "/"
 
+    # Replace the directory separators in the input file path with the appropriate separator for the current operating system.
     filepath = filepath.replace("/" if platform.system() == "Windows" else "\\", os_dir_separator)
 
+    # Remove any leading or trailing whitespace from the file path.
     filepath = filepath.strip()
+
+    # Split the file path into a list of directories. 
     list_directories = filepath.split(os_dir_separator)
 
     temp_token = ""
     abs_path = []
+
+    # Iterate over each token (directory) in the list of directories.  
     for token in list_directories:
+
+        # If not the same as the previous token, remove the last directory from the absolute path.     
         if token == parent_directory_token and token != temp_token:
             temp_token = abs_path.pop()
+
+        # If the token is a parent directory token and it’s not the same as the previous token, skip to the next iteration. Otherwise, add the token to the absolute path. 
         if token == parent_directory_token or token == current_directory_token:
             continue
         abs_path.append(token)
+
+    # Join all directories in the absolute path with the appropriate directory separator and return the result. 
     return os_dir_separator.join(abs_path)
 
 
-# Function to determine if filepath1 and filepath2 are the same.
+# Function to determine if filepath1 and filepath2 are the same, taking into account case sensitivity and relative paths. 
 def homograph(filepath1: str, filepath2: str) -> str:
+
+    # Convert both file paths to lowercase and then call the canon function. Return “Homograph” if the absolute paths of both file paths are the same (ignoring case), and “Non-Homograph” otherwise.
     return "Homograph" if canon(filepath1.lower()) == canon(filepath2.lower()) else "Non-Homograph"
 
 
-# This Function implements the menu, runs the test cases or manual inputs, prints test results, and calls other
-# functions to execute.
+# This Function implements the menu, runs the test cases or manual inputs, prints test results, and calls other functions to execute.
 def main():
     while True:
         choice = menu()
@@ -203,14 +218,13 @@ def main():
         if choice == "3":
             filepath1 = input("Enter the first file path: ")
             filepath2 = input("Enter the second file path: ")
-            print("The paths are non-homographs") if homograph(filepath1, filepath2) else print("The paths are "
-                                                                                                "homographs")
+            print("The paths are non-homographs") if homograph(filepath1, filepath2) else print("The paths are homographs")
             continue
         if choice == "4":
             break
-        print("Invalid choice. Please chose out of available.")
+        print("Invalid choice. Please select from the available choices.")
 
-
+# This function runs a for-loop for each test in the test cases dictionary. Each loop gets the two file paths from the test_cases dictionary, prints them, and then calls the homograph() function to compare the two paths. The expected and actual results are then printed.  
 def run_tests(cases):
     for tests in cases:
         print(tests["name"])
