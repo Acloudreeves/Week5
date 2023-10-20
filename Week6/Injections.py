@@ -72,7 +72,10 @@ def general_query_generator(username, password):
 
 def weak_mitigation_query_wrapper(username: str, password: str) -> str:
     """Some wrapper code over here"""
-    return general_query_generator(username, password)
+    sanitized_username = username.replace("'", "' --")
+    sanitized_password = password.replace("'", "' --")
+    # uses comments to turn attacks into a comment so the attack code never gets executed.
+    return general_query_generator(sanitized_username, sanitized_password)
 
 
 def strong_mitigation_query_wrapper(username: str, password: str) -> str:
@@ -101,10 +104,12 @@ def run_tests(test_set: dict, test_type="simple"):
             display(general_query_generator(username, password), username)
             continue
         if test_type == 'weak':
-            display(weak_mitigation_query_wrapper(username, password), username)
+            display(weak_mitigation_query_wrapper(
+                username, password), username)
             continue
         if test_type == 'strong':
-            display(strong_mitigation_query_wrapper(username, password), username)
+            display(strong_mitigation_query_wrapper(
+                username, password), username)
 
 
 def display(query, username):
@@ -117,59 +122,6 @@ def driver_program():
     while True:
         choice = input("Please make a choice: ")
         if choice == "1":
-            print("\nTest Validation")
-            run_tests(test_valid())
-            continue
-        if choice == "2":
-            print("\nTest Tautology")
-            run_tests(test_tautology())
-            continue
-        if choice == "3":
-            print("\nTest Union")
-            run_tests(test_union())
-            continue
-        if choice == "4":
-            print("\nTest Additional Statement")
-            run_tests(test_additional_statement())
-            continue
-        if choice == "5":
-            print("\nTest Comment")
-            run_tests(test_comment())
-            continue
-        if choice == "6":
-            print("\nTest Weak Tautology")
-            run_tests(test_tautology(), test_type="weak")
-            continue
-        if choice == "7":
-            print("\nTest Weak Union")
-            run_tests(test_union(), test_type="weak")
-            continue
-        if choice == "8":
-            print("\nTest Weak Additional Statement")
-            run_tests(test_additional_statement(), test_type="weak")
-            continue
-        if choice == "9":
-            print("\nTest Weak Comment")
-            run_tests(test_comment(), test_type="weak")
-            continue
-        if choice == "10":
-            print("\nTest Strong Tautology")
-            run_tests(test_tautology(), test_type="strong")
-            continue
-        if choice == "11":
-            print("\nTest Strong Union")
-            run_tests(test_union(), test_type="strong")
-            continue
-        if choice == "12":
-            print("\nTest Strong Additional Statement")
-            run_tests(test_additional_statement(), test_type="strong")
-            continue
-        if choice == "13":
-            print("\nTest Strong Comment")
-            run_tests(test_comment(), test_type="strong")
-            continue
-
-        if choice == "14":
             print("\nRun Validation and Vulnerability sets of tests")
             run_tests(test_valid())
             run_tests(test_tautology())
@@ -177,7 +129,7 @@ def driver_program():
             run_tests(test_additional_statement())
             run_tests(test_comment())
             continue
-        if choice == "15":
+        if choice == "2":
             print("\nRun Weak set of tests")
             test_type = 'weak'
             run_tests(test_tautology(), test_type=test_type)
@@ -185,7 +137,7 @@ def driver_program():
             run_tests(test_additional_statement(), test_type=test_type)
             run_tests(test_comment(), test_type=test_type)
             continue
-        if choice == "16":
+        if choice == "3":
             print("\nRun Strong set of tests")
             test_type = 'strong'
             run_tests(test_tautology(), test_type=test_type)
@@ -203,22 +155,9 @@ def driver_program():
 
 def print_menu():
     print("""
-    1. Test Validation\n
-    2. Test Tautology\n
-    3. Test Union query\n
-    4. Test Additional Statement\n
-    5. Test Comment\n    
-    6. Test Weak Tautology\n
-    7. Test Weak Union query\n
-    8. Test Weak Additional Statement\n
-    9. Test Weak Comment\n 
-    10. Test Strong Tautology\n
-    11. Test Strong Union query\n
-    12. Test Strong Additional Statement\n
-    13. Test Strong Comment\n
-    14. Set of tests without any Mitigation\n
-    15. Set of Weak Mitigation Tests\n
-    16. Set of Strong Mitigation Tests\n
+    1. Set of tests without any Mitigation\n
+    2. Set of Weak Mitigation Tests\n
+    3. Set of Strong Mitigation Tests\n
     h. Display menu\n
     q. Exit\n""")
 
