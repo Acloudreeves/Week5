@@ -31,11 +31,14 @@ def test_comment() -> dict:
     return {
         "name": "Comment test cases",
         "cases": {
-            "Dan": "nothing' OR '1'='1' -- AND role = 'admin'",
-            "Stan": "nope' OR 'a'='a' /* AND role = 'user'",
-            "Fran": "smthg' OR '2'='2' # AND status = 'paid'",
-            "Nan": "' OR 'b'='b' -- - ORDER BY role ASC ",
-            "Jan": "forgot' OR '3'='3' --+ ORDER BY status DESC"
+            "Dan": "nothing' OR '1'='1' -- AND role = 'user'",
+            "Stan": "nope' OR 'a'='a' /* AND status = 'active'",
+            "Fran": "smthg' OR '2'='2' # AND account_type = 'standard'",
+            "Nan": "' OR 'b'='b' -- AND is_admin = 0",
+            "Jan": "forgot' OR '3'='3' -- AND is_locked = 0",
+            "Sam": "' OR 'c'='c' -- AND access_level <= 5",
+            "Pam": "' OR 'd'='d' -- AND account_expiry > CURRENT_DATE",
+            "Tom": "' OR 'e'='e' -- AND num_attempts < 5"
         }
     }
 
