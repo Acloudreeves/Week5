@@ -132,6 +132,7 @@ def driver_program():
         if choice == "2":
             print("\nRun Weak set of tests")
             test_type = 'weak'
+            run_tests(test_valid())
             run_tests(test_tautology(), test_type=test_type)
             run_tests(test_union(), test_type=test_type)
             run_tests(test_additional_statement(), test_type=test_type)
@@ -140,6 +141,7 @@ def driver_program():
         if choice == "3":
             print("\nRun Strong set of tests")
             test_type = 'strong'
+            run_tests(test_valid())
             run_tests(test_tautology(), test_type=test_type)
             run_tests(test_union(), test_type=test_type)
             run_tests(test_additional_statement(), test_type=test_type)
