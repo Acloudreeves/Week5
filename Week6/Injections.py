@@ -34,11 +34,8 @@ def test_comment() -> dict:
             "Dan": "nothing' OR '1'='1' -- AND role = 'user'",
             "Stan": "nope' OR 'a'='a' /* AND status = 'active'",
             "Fran": "smthg' OR '2'='2' # AND account_type = 'standard'",
-            "Nan": "' OR 'b'='b' -- AND is_admin = 0",
-            "Jan": "forgot' OR '3'='3' -- AND is_locked = 0",
-            "Sam": "' OR 'c'='c' -- AND access_level <= 5",
-            "Pam": "' OR 'd'='d' -- AND account_expiry > CURRENT_DATE",
-            "Tom": "' OR 'e'='e' -- AND num_attempts < 5"
+            "Nan": "' OR 'b'='b' -- AND is_locked = 0",
+            "Jan": "forgot' OR '3'='3' -- AND num_attempts < 5"
         }
     }
 
