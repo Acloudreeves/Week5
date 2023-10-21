@@ -31,11 +31,11 @@ def test_comment() -> dict:
     return {
         "name": "Comment test cases",
         "cases": {
-            "Dan": "nothing' OR '1'='1' --",
-            "Stan": "nope' OR 'a'='a' /*",
-            "Fran": "smthg' OR '2'='2' #",
-            "Nan": "' OR 'b'='b' -- -",
-            "Jan": "forgot' OR '3'='3' --+"
+            "Dan": "nothing' OR '1'='1' -- AND role = 'admin'",
+            "Stan": "nope' OR 'a'='a' /* AND role = 'user'",
+            "Fran": "smthg' OR '2'='2' # AND status = 'paid'",
+            "Nan": "' OR 'b'='b' -- - ORDER BY role ASC ",
+            "Jan": "forgot' OR '3'='3' --+ ORDER BY status DESC"
         }
     }
 
